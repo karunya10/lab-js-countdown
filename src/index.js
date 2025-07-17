@@ -3,8 +3,6 @@ let remainingTime = DURATION; // Countdown starting from 10
 let timer = null; // Variable to store the interval
 
 // ITERATION 1: Add event listener to the start button
-
-// Your code goes here ...
 const btn = document.querySelector("#start-btn");
 btn.addEventListener("click", (e) => {
   let timeoutInterval = setInterval(
@@ -15,19 +13,21 @@ btn.addEventListener("click", (e) => {
 
 // ITERATION 2: Start Countdown
 function startCountdown(timeoutInterval) {
-  console.log("startCountdown called!");
   const timeElement = document.querySelector("#time");
-  //reduce remaining time by 1 , for every setInterval
-  //update the dom with the remaining time
-  // if(remainingTime <0) Clear interval
-  // Your code goes here ...
   if (remainingTime <= 0) {
     clearInterval(timeoutInterval);
     remainingTime = DURATION;
     timeElement.innerText = remainingTime;
-    showToast();
+    showToast("Lift off! 🚀");
     return;
   }
+
+  if (remainingTime === 10) {
+    showToast("⏰ Final countdown! ⏰");
+  } else if (remainingTime === 5) {
+    showToast("Start the engines! 💥");
+  }
+
   remainingTime--;
 
   timeElement.innerText = remainingTime;
@@ -35,26 +35,21 @@ function startCountdown(timeoutInterval) {
 
 // ITERATION 3: Show Toast
 function showToast(message) {
-  console.log("showToast called!");
+  let toastId = document.querySelector("#toast");
+  let toastMsg = document.querySelector("#toast-message");
+  toastMsg.innerText = "";
+  toastMsg.innerText = message;
 
-  toggleToast();
-
-  // Your code goes here ...
+  toastId.classList.add("show");
+  const timeoutId = setTimeout(() => {
+    toastId.classList.remove("show");
+  }, 2000);
 
   // BONUS: ITERATION 4: TOAST CLOSE BUTTON
 
-  // Your code goes here ...
   let toastCloseButton = document.querySelector("#close-toast");
-  toastCloseButton.addEventListener("click", onClickClose);
-}
-
-function onClickClose() {
-  toggleToast();
-  let toastCloseButton = document.querySelector("#close-toast");
-  toastCloseButton.removeEventListener("click", toggleToast);
-}
-
-function toggleToast() {
-  let toastId = document.querySelector("#toast");
-  toastId.classList.toggle("toast");
+  toastCloseButton.addEventListener("click", () => {
+    toastId.classList.remove("show");
+    clearTimeout(timeoutId);
+  });
 }
